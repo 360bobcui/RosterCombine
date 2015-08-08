@@ -202,14 +202,29 @@ public class NewJFrame extends javax.swing.JFrame {
             try {
                 DMPORosterToMapGenerator dmpo = new DMPORosterToMapGenerator(DMPORosterFile);
                 RCFRosterToMapGenerator rcf = new RCFRosterToMapGenerator(RCFRosterFile);               
-                List<String> ssnList = rcf.rosterGenerator();   // generate roster.txt       
-                NPDListFinder npd = new NPDListFinder(GlobalVar.SSN_FILE_NAME);
+                
+                NPDListFinder npd = new NPDListFinder(GlobalVar.SSN_FILE_NAME);                
                 List<String> npdList = npd.getNPDList();
                 
+                // find the LES not available list
+                List<String> ssnList = rcf.rosterGenerator();   // generate a list of all SSN in RCF roster, roster.txt       
+                List<String> lesList4Printing = rcf.lesSSNList(GlobalVar.CUT_OFF); //                
+                ssnList.removeAll(lesList4Printing); // those are not for printing LES
                 
-                PrintLES pLes = new PrintLES(ssnList);
-                List<String> LesNAList = pLes.getLESnotProcdSSNList();
+                PrintLES pLes = new PrintLES(lesList4Printing);                      
+                List<String> LesNAListInDJMS = pLes.getLESnotProcdSSNList();
+               
+                ssnList.addAll(LesNAListInDJMS);
+                List<String> LesNAList = ssnList; // LES not avilable
                 
+                // printing not processed ssn into the file
+                PrintStream output = new PrintStream(new File(GlobalVar.UNPROCESSED_SSN_FILE_NAME));
+                for (String ssn : LesNAList) {
+                    output.println(ssn);
+                }
+                // end of find the LES not available list
+                
+                // find the LES not available list
                 XlsxGenerator xg = new XlsxGenerator(dmpo.getDb(), rcf.getDb(), npdList, LesNAList);
                                 
                 JOptionPane.showMessageDialog(null, "The NPD report is generated successfully!");

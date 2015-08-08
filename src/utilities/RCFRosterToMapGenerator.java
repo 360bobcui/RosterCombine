@@ -33,17 +33,18 @@ public class RCFRosterToMapGenerator {
     private Map<String, List<String>> db;
     
     // sheet number 1 for personal info. i.ie SSN, name, Arrival date, confinement type
-    private static final int SHEET_NO_PERSONAL = 0;  // sheet contains personal info
+    private static final int SHEET_NO_PERSONAL = 0;  // sheet contains personal info, arrival date
     private static final int REG_INDX_PERSONAL = 0;
     private static final int SSN_INDX_PERSONAL = 1;
     private static final int INMATE_NAME_INDX_PERSONAL = 2;
-    private static final int CONF_TYPE_INDX_PERSONAL = 3;  
+    private static final int CONF_TYPE_INDX_PERSONAL = 3; 
+    //private static final int 
     private static final int ARR_DT_INDX_PERSONAL = 5;  
     
   
     //sheet number 2 for service info. i.e. army, navy, marines
     private static final int SHEET_NO_SERVICES = 1;  // sheet contains service info
-    private static final int REG_INDX_SERVICES = 0;
+    private static final int REG_INDX_SERVICES = 0;  
     //private static final int INMATE_NAME_INDX_SERVICES = 1;
     private static final int INMATE_BRANCH_TYPE_INDX_SERVICES = 3;   // branch type
     private static final int INMATE_SERVICE_TYPE_INDX_SERVICES = 4;  //officers / enlisted
@@ -78,6 +79,26 @@ public class RCFRosterToMapGenerator {
         for (String ssn : ssnSet) {
             output.println(ssn);
             list.add(ssn);
+        }
+        return list;
+    }
+    
+    // return a list of soldier who arrives the RCF days before given cutoff (default: 60 days)
+    public List<String> lesSSNList(int cutoff) throws FileNotFoundException {
+        List<String> list = new ArrayList<String>();
+        //PrintStream output = new PrintStream(new File(GlobalVar.SSN_FILE_NAME));
+        Set<String> ssnSet = db.keySet();
+        MyDate today = new MyDate();
+        for (String ssn : ssnSet) {
+            List<String> value = db.get(ssn);
+            String dateString = value.get(ARR_DT_INDX_PERSONAL);  // 6/16/2015
+            MyDate date = new MyDate(dateString);  
+            String confType = value.get(CONF_TYPE_INDX_PERSONAL);
+            if(date.getDaysDiff(today) <= cutoff){           
+                list.add(ssn);
+            } else if (confType != null && confType.equalsIgnoreCase("PRE-TRIAL")) {
+                list.add(ssn);
+            }
         }
         return list;
     }
@@ -134,10 +155,10 @@ public class RCFRosterToMapGenerator {
                 String name = row.getCell(INMATE_NAME_INDX_PERSONAL).getStringCellValue();
                 String confinementType = row.getCell(CONF_TYPE_INDX_PERSONAL).getStringCellValue();
                 String arrDt = df.formatCellValue(row.getCell(ARR_DT_INDX_PERSONAL));
-                list.add(ssn);
-                list.add(name);
-                list.add(confinementType);
-                list.add(arrDt);
+                list.add(ssn.trim());
+                list.add(name.trim());
+                list.add(confinementType.trim());
+                list.add(arrDt.trim());
                 map.put(reg, list);
             }
         }

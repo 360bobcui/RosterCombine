@@ -28,7 +28,7 @@ import javax.swing.JOptionPane;
  * @author SPC Cui
  */
 public class GlobalVar {  
-     public static final int DATE_LEN = 6; //150101 -  Jan 1, 2015
+  //   public static final int DATE_LEN = 6; //150101 -  Jan 1, 2015
     public static final int NUM_SSN_PER_PAGE = 24;
     public static final String WHITE = "org.apache.poi.xssf.usermodel.XSSFColor@1c8ac5fd";
     public static final String YELLOW = "org.apache.poi.xssf.usermodel.XSSFColor@495ecbdd";
@@ -48,7 +48,18 @@ public class GlobalVar {
     public static final int SSN_LEN = 9;
     
     public static String SSN_FILE_NAME = "roster.txt";  //ssn file unprocessedSSN.txt
-    public static String UNPROCESSED_SSN_FILE_NAME = "unprocessedSSN_LES.txt"; 
+    public static String UNPROCESSED_SSN_FILE_NAME = "unprocessedSSN_LES.txt";  // no LES available based on DJMS
+    
+    //dates
+    public static final int DATE_LEN = 6; //150101 -  Jan 1, 2015
+    public static final int ORDER_LEAVE_DAYS_IN_DMO = 3; // three digits in dmo
+    public static final int YEAR_BASE = 2000;  //  two-digit year to four digit year,e.g. 15 -> 2015
+    public static final int LAST4SSN_LEN = 4;
+    public static final int PACID_LEN = 8;  //e.g. NM1FB5AA 
+    public static final double ONE_DAY_IN_MILLISECOND = 86400000.0;
+    public static final double SOME_SEC_IN_MILLISECOND = 10.0;  // unit: milliseconds
+    
+     public static final int CUT_OFF = 60;  // print les 60 days before todays date
     
     public static String validateSSN(String ssn){
         while(ssn.length() < SSN_LEN){

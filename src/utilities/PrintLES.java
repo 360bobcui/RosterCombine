@@ -41,12 +41,13 @@ public class PrintLES {
         ROBOT.delay(GlobalVar.SPEED_DJMS);
         // Print out LES and generate a list of unprocessed SSN
         LESnotAvailableSSNList = processLES(ssnList);
-        PrintStream output = new PrintStream(new File(GlobalVar.UNPROCESSED_SSN_FILE_NAME));
-        for (String ssn : LESnotAvailableSSNList) {
-            output.println(ssn);
-        }
+//        PrintStream output = new PrintStream(new File(GlobalVar.UNPROCESSED_SSN_FILE_NAME));
+//        for (String ssn : LESnotAvailableSSNList) {
+//            output.println(ssn);
+//        }
     }
     
+    // return a list of SSN not processed (LES is not printed)
     public static List<String> getLESnotProcdSSNList() {
         return LESnotAvailableSSNList;
     }
@@ -64,6 +65,8 @@ public class PrintLES {
                 List<String> thisPage = getNotProcessedSSN(res);   // check not processed SSNs
                 list.addAll(thisPage);
                 count = 0;
+                JOptionPane.showMessageDialog(null, "Continue to print the next 24?");
+                ROBOT.delay(GlobalVar.SPEED_DJMS);
             }
         }
         // print out the left over of the SSN not processed
