@@ -29,9 +29,10 @@ import javax.swing.JOptionPane;
 public class NPDListFinder {
 
     public static List<String> NPDlist;
-
     
-    public NPDListFinder(String fileName) throws UnsupportedFlavorException, IOException, AWTException {
+    
+    
+    public NPDListFinder(List<String> ssnlist) throws UnsupportedFlavorException, IOException, AWTException {
         NPDlist = new ArrayList<>();
        // ssnlist = new ArrayList<>();
         //String fileName = args[0]; // file name in txt format
@@ -39,7 +40,8 @@ public class NPDListFinder {
 //            SPEED = Integer.parseInt(args[1]);
 //            SPEED1 = Integer.parseInt(args[2]);
 //        }
-        List<String> list = readSSN(fileName);
+        //List<String> list = readSSN(fileName);
+        List<String> list = ssnlist;
         //List<String> NPDlist = new ArrayList<String>();        
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();      
         Robot rob = new Robot();

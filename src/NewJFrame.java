@@ -201,9 +201,10 @@ public class NewJFrame extends javax.swing.JFrame {
     
             try {
                 DMPORosterToMapGenerator dmpo = new DMPORosterToMapGenerator(DMPORosterFile);
-                RCFRosterToMapGenerator rcf = new RCFRosterToMapGenerator(RCFRosterFile);               
+                RCFRosterToMapGenerator rcf = new RCFRosterToMapGenerator(RCFRosterFile);            
                 
-                NPDListFinder npd = new NPDListFinder(GlobalVar.SSN_FILE_NAME);                
+                
+                NPDListFinder npd = new NPDListFinder(rcf.rosterGenerator());  // pass in a list of all ssn on RCF roster              
                 List<String> npdList = npd.getNPDList();
                 
                 // find the LES not available list

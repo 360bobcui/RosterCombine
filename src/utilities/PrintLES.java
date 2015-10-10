@@ -56,13 +56,16 @@ public class PrintLES {
     private static List<String> processLES(List<String> ssnList) throws UnsupportedFlavorException, IOException {
         int count = 0;
         List<String> list = new ArrayList<String>();
+        System.out.println("SSN for printing les: " + ssnList);
         for (String ssn : ssnList) {
             GlobalVar.keyInSSNLES(ssn, ROBOT);
             count++;
+            System.out.println("Printing:  " + ssn);
             if(count == GlobalVar.NUM_SSN_PER_PAGE) {  //ready to print
                 F9print();
                 String res = copyDJMSContent();
                 List<String> thisPage = getNotProcessedSSN(res);   // check not processed SSNs
+                System.out.println("SSN not processed: " + thisPage);
                 list.addAll(thisPage);
                 count = 0;
                 JOptionPane.showMessageDialog(null, "Continue to print the next 24?");

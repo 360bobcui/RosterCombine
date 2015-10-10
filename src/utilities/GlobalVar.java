@@ -59,7 +59,7 @@ public class GlobalVar {
     public static final double ONE_DAY_IN_MILLISECOND = 86400000.0;
     public static final double SOME_SEC_IN_MILLISECOND = 10.0;  // unit: milliseconds
     
-     public static final int CUT_OFF = 60;  // print les 60 days before todays date
+     public static final int CUT_OFF = 90;  // print les 90 days before todays date
     
     public static String validateSSN(String ssn){
         while(ssn.length() < SSN_LEN){

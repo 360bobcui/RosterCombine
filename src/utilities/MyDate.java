@@ -32,7 +32,7 @@ public class MyDate extends GregorianCalendar{
         if (text != null){
            
             // is not 6.
-            if (text.length() != GlobalVar.DATE_LEN) {            
+            if (text.length() != GlobalVar.DATE_LEN || text.contains("/")) {            
                 if (!text.contains("/")) //not m/d/yyyy format
                     throw new IllegalArgumentException("Date is invalid!");
                 else {
@@ -42,7 +42,7 @@ public class MyDate extends GregorianCalendar{
                     String month = sanitizeMonth(dates[0]);
                     String year = sanitizeYear(dates[2]);
                     text = year + month + date;
-                    System.out.println(text);
+                    System.out.println("MyDate.java: from / Date is: " + text);
                 }
             }
             String num = text.replaceAll("[^\\d]","");
@@ -286,9 +286,11 @@ public class MyDate extends GregorianCalendar{
      
           
    // given four char long year, return two char long month
-     public String sanitizeYear(String date) {
-         if (date != null && date.length() == 4) {
-             return date.substring(2); // 2015 - > 15
+     public String sanitizeYear(String year) {
+         if (year != null && year.length() == 4) {
+             return year.substring(2); // 2015 - > 15
+         } else if (year != null && year.length() == 2) {
+             return year;
              
          } else {
              throw new IllegalArgumentException("MyDate.java: Invalid Date format: year.");

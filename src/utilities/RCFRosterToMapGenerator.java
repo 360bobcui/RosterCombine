@@ -49,7 +49,13 @@ public class RCFRosterToMapGenerator {
     private static final int INMATE_BRANCH_TYPE_INDX_SERVICES = 3;   // branch type
     private static final int INMATE_SERVICE_TYPE_INDX_SERVICES = 4;  //officers / enlisted
  
-    private static final String[] header = {"SSN", "INMATE", "CONF TYPE", "ARR DT", "TYPE"};
+      // example:  000-00-1111, CUI, WEI, ADJUDGED, 7/9/2015/, ENLISTED
+    private static final String[] header = {"SSN", "INMATE NAME", "CONF TYPE", "ARR DT", "RANK TYPE"};
+    private static final int SSN_INDX = 0;
+    private static final int NAME_INDX = 1;
+    private static final int CONF_TYPE_INDX = 2;
+    private static final int ARR_DT_INDX = 3;
+    private static final int RANK_TYPE_INDX = 4;
     
     public RCFRosterToMapGenerator(String xlsxFileName) throws FileNotFoundException, IOException {
         
@@ -83,7 +89,7 @@ public class RCFRosterToMapGenerator {
         return list;
     }
     
-    // return a list of soldier who arrives the RCF days before given cutoff (default: 60 days)
+    // return a list of soldier who arrives the RCF days before given cutoff (default: 60 days) or pre-trial soldiers
     public List<String> lesSSNList(int cutoff) throws FileNotFoundException {
         List<String> list = new ArrayList<String>();
         //PrintStream output = new PrintStream(new File(GlobalVar.SSN_FILE_NAME));
@@ -91,9 +97,10 @@ public class RCFRosterToMapGenerator {
         MyDate today = new MyDate();
         for (String ssn : ssnSet) {
             List<String> value = db.get(ssn);
-            String dateString = value.get(ARR_DT_INDX_PERSONAL);  // 6/16/2015
+            System.out.println(value);
+            String dateString = value.get(ARR_DT_INDX);  // 6/16/2015
             MyDate date = new MyDate(dateString);  
-            String confType = value.get(CONF_TYPE_INDX_PERSONAL);
+            String confType = value.get(CONF_TYPE_INDX);
             if(date.getDaysDiff(today) <= cutoff){           
                 list.add(ssn);
             } else if (confType != null && confType.equalsIgnoreCase("PRE-TRIAL")) {
@@ -154,8 +161,9 @@ public class RCFRosterToMapGenerator {
                 String ssn = row.getCell(SSN_INDX_PERSONAL).getStringCellValue();
                 String name = row.getCell(INMATE_NAME_INDX_PERSONAL).getStringCellValue();
                 String confinementType = row.getCell(CONF_TYPE_INDX_PERSONAL).getStringCellValue();
+                //String arrDt = row.getCell(ARR_DT_INDX_PERSONAL).getStringCellValue(); //doesn't work since cell is numeric
                 String arrDt = df.formatCellValue(row.getCell(ARR_DT_INDX_PERSONAL));
-                list.add(ssn.trim());
+                list.add(ssn.trim());  // 
                 list.add(name.trim());
                 list.add(confinementType.trim());
                 list.add(arrDt.trim());
@@ -168,8 +176,7 @@ public class RCFRosterToMapGenerator {
     // given the two maps generated from the two xlsx sheets, and generate the final map
     // key = SSN,  value = list<String>
     private Map<String, List<String>> dbGenerator(Map<String, String> armyPrisonersMap
-            , Map<String, List<String>> personalInfoMap) {
-    
+            , Map<String, List<String>> personalInfoMap) {    
         Map<String, List<String>> mydb = new TreeMap<>(); 
         Set<String> regs = armyPrisonersMap.keySet();  //all the army prisoners
         for(String reg : regs) {
@@ -177,7 +184,7 @@ public class RCFRosterToMapGenerator {
                List<String> l = personalInfoMap.get(reg); //extract the list of personal info
                String ssn = l.get(0);  //first added into the list
                String truncatedSSN = ssn.replaceAll("-",""); // get rid of "-"
-               l.add(armyPrisonersMap.get(reg)); // add one more info from a different map
+               l.add(armyPrisonersMap.get(reg)); // add enlisted/officer
                mydb.put(truncatedSSN, l); 
             }
         }
