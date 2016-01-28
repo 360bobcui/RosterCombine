@@ -105,11 +105,11 @@ public class DMPORosterToMapGenerator {
 
                     Cell ssnCell = row.getCell(SSN_INDX);
                     String ssnString = df.formatCellValue(ssnCell); //return ***-**-****
-                    ssnString = readSSN(ssnString);
+                    ssnString = readSSN(ssnString).trim();
                     if (!db.containsKey(ssnString)) {
                         List<String> list = new LinkedList<String>();
-                        String ssn = displayFormatSSN(ssnString);
-                        String name = row.getCell(NAME_INDX).getStringCellValue();
+                        String ssn = displayFormatSSN(ssnString).trim();
+                        String name = row.getCell(NAME_INDX).getStringCellValue().trim();
                         String dutyStation = row.getCell(ORIGIN_INDX).getStringCellValue();
                         String typeCM = row.getCell(TYPE_CM_INDX).getStringCellValue();
                         //String typeCM = row.getCell(TYPE_CM_INDX).getStringCellValue();

@@ -42,8 +42,8 @@ public class GlobalVar {
     public static final int FRONT_PAD_NO = 7;
     public static final int BACK_PAD_NO = 6;
     public static final int MIDDLE_PAD_NO = 2;
-    public static int SPEED1 = 50;
-    public static int SPEED2 = 500;
+    public static int SPEED1 = 1;
+    public static int SPEED2 = 200;
     public static int SPEED_DJMS = 2000;
     public static final int SSN_LEN = 9;
     

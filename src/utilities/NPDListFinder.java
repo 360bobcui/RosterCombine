@@ -45,7 +45,7 @@ public class NPDListFinder {
         //List<String> NPDlist = new ArrayList<String>();        
         Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();      
         Robot rob = new Robot();
-        JOptionPane.showMessageDialog(null, "Are you ready to have DJMS come to the front?");          
+        JOptionPane.showMessageDialog(null, "Are you ready to have DJMS come to the front? If so, pre-fill PU in DJMS.");          
         rob.delay(GlobalVar.SPEED_DJMS);//wait for the user to focus on DJMS
     
         String result = null;

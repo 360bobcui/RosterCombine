@@ -126,7 +126,7 @@ public class RCFRosterToMapGenerator {
             Cell cellReg = row.getCell(REG_INDX_SERVICES);            
             Cell cellBranch = row.getCell(INMATE_BRANCH_TYPE_INDX_SERVICES);
             Cell cellService = row.getCell(INMATE_SERVICE_TYPE_INDX_SERVICES); //officer / enlisted
-            String reg = cellReg.getStringCellValue();           
+            String reg = cellReg.getStringCellValue().trim();           
             String service = cellService.getStringCellValue();
             String branch = cellBranch.getStringCellValue();
             
@@ -154,7 +154,7 @@ public class RCFRosterToMapGenerator {
             Row row = rowIterator.next();
             Cell cellReg = row.getCell(REG_INDX_PERSONAL);
 
-            String reg = cellReg.getStringCellValue();
+            String reg = cellReg.getStringCellValue().trim();
             
             if (!map.containsKey(reg)) {
                 List<String> list = new LinkedList<>();
