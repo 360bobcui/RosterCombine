@@ -110,8 +110,8 @@ public class DMPORosterToMapGenerator {
                         List<String> list = new LinkedList<String>();
                         String ssn = displayFormatSSN(ssnString).trim();
                         String name = row.getCell(NAME_INDX).getStringCellValue().trim();
-                        String dutyStation = row.getCell(ORIGIN_INDX).getStringCellValue();
-                        String typeCM = row.getCell(TYPE_CM_INDX).getStringCellValue();
+                        String dutyStation = row.getCell(ORIGIN_INDX).getStringCellValue().trim();
+                        String typeCM = row.getCell(TYPE_CM_INDX).getStringCellValue().trim();
                         //String typeCM = row.getCell(TYPE_CM_INDX).getStringCellValue();
                         list.add(ssn);
                         list.add(name);

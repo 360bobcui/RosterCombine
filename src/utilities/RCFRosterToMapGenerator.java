@@ -126,10 +126,13 @@ public class RCFRosterToMapGenerator {
             Cell cellReg = row.getCell(REG_INDX_SERVICES);            
             Cell cellBranch = row.getCell(INMATE_BRANCH_TYPE_INDX_SERVICES);
             Cell cellService = row.getCell(INMATE_SERVICE_TYPE_INDX_SERVICES); //officer / enlisted
-            String reg = cellReg.getStringCellValue().trim();           
-            String service = cellService.getStringCellValue();
-            String branch = cellBranch.getStringCellValue();
-            
+            String reg = GlobalVar.trimString(cellReg.getStringCellValue());    
+            //reg = reg.replaceAll(String.valueOf((char)160),"");
+            String service = GlobalVar.trimString(cellService.getStringCellValue());
+            //service = service.replaceAll(String.valueOf((char)160),"");
+            String branch = GlobalVar.trimString(cellBranch.getStringCellValue());
+            //branch = branch.replaceAll(String.valueOf((char)160),"");
+           // System.out.println(reg + "+" + branch);
             if (!map.containsKey(reg) && branch.equalsIgnoreCase("Army")) {
                 map.put(reg, service);
             }
@@ -154,19 +157,19 @@ public class RCFRosterToMapGenerator {
             Row row = rowIterator.next();
             Cell cellReg = row.getCell(REG_INDX_PERSONAL);
 
-            String reg = cellReg.getStringCellValue().trim();
+            String reg = GlobalVar.trimString(cellReg.getStringCellValue());
             
             if (!map.containsKey(reg)) {
                 List<String> list = new LinkedList<>();
-                String ssn = row.getCell(SSN_INDX_PERSONAL).getStringCellValue();
-                String name = row.getCell(INMATE_NAME_INDX_PERSONAL).getStringCellValue();
-                String confinementType = row.getCell(CONF_TYPE_INDX_PERSONAL).getStringCellValue();
+                String ssn = GlobalVar.fullSSNgenerator(GlobalVar.trimString(row.getCell(SSN_INDX_PERSONAL).getStringCellValue()));
+                String name = GlobalVar.trimString(row.getCell(INMATE_NAME_INDX_PERSONAL).getStringCellValue());
+                String confinementType = GlobalVar.trimString(row.getCell(CONF_TYPE_INDX_PERSONAL).getStringCellValue());
                 //String arrDt = row.getCell(ARR_DT_INDX_PERSONAL).getStringCellValue(); //doesn't work since cell is numeric
-                String arrDt = df.formatCellValue(row.getCell(ARR_DT_INDX_PERSONAL));
-                list.add(ssn.trim());  // 
-                list.add(name.trim());
-                list.add(confinementType.trim());
-                list.add(arrDt.trim());
+                String arrDt = GlobalVar.trimString(df.formatCellValue(row.getCell(ARR_DT_INDX_PERSONAL)));
+                list.add(ssn);  // 
+                list.add(name);
+                list.add(confinementType);
+                list.add(arrDt);
                 map.put(reg, list);
             }
         }

@@ -14,7 +14,7 @@ import utilities.GlobalVar;
  */
 // the reaseon to extends from GregorianCalendar is this class still has constructor
 // GregorianCalendar(int year, int month, int date)
-public class MyDate extends GregorianCalendar{
+public final class MyDate extends GregorianCalendar{
 
     private Calendar day;    
     private int thisYear;
@@ -25,24 +25,31 @@ public class MyDate extends GregorianCalendar{
     public MyDate() {  //set today's date 
         // use computer time as the sign in time
         this(null);
-        
     }
     
     public MyDate(String text){     
-        if (text != null){
-           
+        if (text != null){           
             // is not 6.
             if (text.length() != GlobalVar.DATE_LEN || text.contains("/")) {            
                 if (!text.contains("/")) //not m/d/yyyy format
                     throw new IllegalArgumentException("Date is invalid!");
                 else {
+                    text = text.trim();
                     String[] dates = text.split("/");
-                    String tempText = text;
-                    String date = sanitizeDate(dates[1]);
-                    String month = sanitizeMonth(dates[0]);
-                    String year = sanitizeYear(dates[2]);
-                    text = year + month + date;
-                    System.out.println("MyDate.java: from / Date is: " + text);
+                    String firstPart = dates[0];
+                    if (firstPart.length() <= 2) {   //mm/dd/yyyy or mm/dd/yy format
+                        String date = sanitizeDate(dates[1]);
+                        String month = sanitizeMonth(dates[0]);
+                        String year = sanitizeYear(dates[2]);
+                        text = year + month + date;
+                        System.out.println("MyDate.java: from / Date is: " + text);
+                    } else { // month.length() != 4  //yyyy/mm/dd format         
+                        String date = sanitizeDate(dates[2]);
+                        String month = sanitizeMonth(dates[1]);
+                        String year = sanitizeYear(dates[0]);
+                        text = year + month + date;
+                        System.out.println("MyDate.java: from / Date is: " + text);
+                    }
                 }
             }
             String num = text.replaceAll("[^\\d]","");
@@ -267,20 +274,20 @@ public class MyDate extends GregorianCalendar{
                  return date;
              }
          } else {
-             throw new IllegalArgumentException("MyDate.java: Invalid Date format: date.");
+             throw new IllegalArgumentException("MyDate.java: Invalid Date format: date: " + date);
          }
      }
      
    // given one char long month, return two char long month
-     public String sanitizeMonth(String date) {
-         if (date != null && date.length() <= 2) {
-             if (date.length() == 1){
-                 return "0" + date;
+     public String sanitizeMonth(String month) {
+         if (month != null && month.length() <= 2) {
+             if (month.length() == 1){
+                 return "0" + month;
              } else {
-                 return date;
+                 return month;
              }
          } else {
-             throw new IllegalArgumentException("MyDate.java: Invalid Date format: month.");
+             throw new IllegalArgumentException("MyDate.java: Invalid Date format: month: " + month);
          }
      }
      
@@ -293,7 +300,7 @@ public class MyDate extends GregorianCalendar{
              return year;
              
          } else {
-             throw new IllegalArgumentException("MyDate.java: Invalid Date format: year.");
+             throw new IllegalArgumentException("MyDate.java: Invalid Date format, year: " + year);
          }
      }
 }

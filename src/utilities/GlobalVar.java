@@ -135,5 +135,35 @@ public class GlobalVar {
             case 'y': return KeyEvent.VK_Y;
             default: return KeyEvent.VK_Z;   
         }   
-    }    
+    } 
+    
+//    
+//    // pre: ssn is not an empty string
+//    // pad ssn with 0 in the front if it is not ssn long.
+    public static String fullSSNgenerator(String ssn) {
+        if (ssn != null){
+            ssn = ssn.replaceAll("-",""); //replace some ssn with format of 000-00-0000
+            if (ssn.length() > SSN_LEN){   
+                JOptionPane.showMessageDialog(null, "GlobalVar.java: Invalid SSN! SSN is longer than 9 digits.");
+                return null;
+            } else if (ssn.contains("[^0-9]")){
+                JOptionPane.showMessageDialog(null, "GlobalVar.java: SSN should not contain any non-digit characters.");
+                return null;            
+            } else {
+                while(ssn.length() < SSN_LEN) {
+                    ssn = "0" + ssn;
+                }
+                return ssn;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "GlobalVar.java: SSN can not be null");
+            return null;
+        }
+    }  
+    
+    public static String trimString(String raw) {
+        raw = raw.replaceAll(String.valueOf((char)160),"");
+        return raw.trim();
+    }
+
 }
